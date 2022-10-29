@@ -36,27 +36,35 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.test = exports.healthCheck = void 0;
-var healthCheck = function () { return __awaiter(void 0, void 0, void 0, function () {
+exports.getMemberTasks = void 0;
+var AppError_1 = require("../utils/AppError");
+var getMemberTasks = function (event) { return __awaiter(void 0, void 0, void 0, function () {
+    var memberId;
     return __generator(this, function (_a) {
-        return [2 /*return*/, {
-                statusCode: 200,
-                body: JSON.stringify({
-                    message: "we're live",
-                }),
-            }];
+        try {
+            if (!event.pathParameters) {
+                throw new AppError_1.AppError("invalid request", 401);
+            }
+            memberId = event.pathParameters.memberId;
+            return [2 /*return*/, {
+                    statusCode: 200,
+                    body: JSON.stringify({
+                        tasks: [{ name: "List all todos", memberId: memberId }],
+                        input: event
+                    }),
+                }];
+        }
+        catch (error) {
+            return [2 /*return*/, {
+                    statusCode: error.status || 500,
+                    body: JSON.stringify({
+                        message: error.message,
+                        stack: error.stack
+                    }),
+                }];
+        }
+        return [2 /*return*/];
     });
 }); };
-exports.healthCheck = healthCheck;
-var test = function (event) { return __awaiter(void 0, void 0, void 0, function () {
-    return __generator(this, function (_a) {
-        return [2 /*return*/, {
-                statusCode: 200,
-                body: JSON.stringify({
-                    input: event
-                }),
-            }];
-    });
-}); };
-exports.test = test;
-//# sourceMappingURL=healthCheck.js.map
+exports.getMemberTasks = getMemberTasks;
+//# sourceMappingURL=member.js.map

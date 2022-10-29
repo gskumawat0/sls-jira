@@ -1,6 +1,48 @@
-getAllTasks:
-  handler: handlers/task.getAllTasks
+createTask:
+  handler: handlers/task.createTask
   events:
     - httpApi:
-        path: /tasks
+        path: /task
+        method: post
+updateTask:
+  handler: handlers/task.updateTask
+  events:
+    - httpApi:
+        path: /task/{taskId}
+        method: put
+getTask:
+  handler: handlers/task.getTask
+  events:
+    - httpApi:
+        path: /task/{taskId}
         method: get
+deleteTask:
+  handler: handlers/task.deleteTask
+  events:
+    - httpApi:
+        path: /task/{taskId}
+        method: delete
+assignTask:
+  handler: handlers/task.assignTask
+  events:
+    - httpApi:
+        path: /task/{taskId}/assign/{memberId}
+        method: put
+acceptTask:
+  handler: handlers/task.acceptTask
+  events:
+    - httpApi:
+        path: /task/{taskId}/accept
+        method: put
+completeTask:
+  handler: handlers/task.completeTask
+  events:
+    - httpApi:
+        path: /task/{taskId}/complete
+        method: put
+closeTask:
+  handler: handlers/task.closeTask
+  events:
+    - httpApi:
+        path: /task/{taskId}/close
+        method: put

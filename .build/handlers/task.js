@@ -35,14 +35,136 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-module.exports.getAllTasks = function (event) { return __awaiter(void 0, void 0, void 0, function () {
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.closeTask = exports.completeTask = exports.acceptTask = exports.assignTask = exports.deleteTask = exports.getTask = exports.updateTask = exports.createTask = void 0;
+var AppError_1 = require("../utils/AppError");
+var createTask = function (event) { return __awaiter(void 0, void 0, void 0, function () {
+    var data;
     return __generator(this, function (_a) {
+        if (!event.body) {
+            throw new AppError_1.AppError("invalid request", 401);
+        }
+        data = JSON.parse(event.body);
         return [2 /*return*/, {
-                statusCode: 404,
+                statusCode: 200,
                 body: JSON.stringify({
-                    tasks: [{ name: "List all todos" }]
-                }, null, 2),
+                    task: data
+                }),
             }];
     });
 }); };
+exports.createTask = createTask;
+var updateTask = function (event) { return __awaiter(void 0, void 0, void 0, function () {
+    var data, taskId;
+    return __generator(this, function (_a) {
+        if (!event.body || !event.pathParameters) {
+            throw new AppError_1.AppError("invalid request", 401);
+        }
+        data = JSON.parse(event.body);
+        taskId = event.pathParameters.taskId;
+        return [2 /*return*/, {
+                statusCode: 200,
+                body: JSON.stringify({
+                    task: data
+                }),
+            }];
+    });
+}); };
+exports.updateTask = updateTask;
+var getTask = function (event) { return __awaiter(void 0, void 0, void 0, function () {
+    var taskId;
+    return __generator(this, function (_a) {
+        if (!event.pathParameters) {
+            throw new AppError_1.AppError("invalid request", 401);
+        }
+        taskId = event.pathParameters.taskId;
+        return [2 /*return*/, {
+                statusCode: 200,
+                body: JSON.stringify({
+                    task: [{ id: taskId }]
+                }),
+            }];
+    });
+}); };
+exports.getTask = getTask;
+var deleteTask = function (event) { return __awaiter(void 0, void 0, void 0, function () {
+    var taskId;
+    return __generator(this, function (_a) {
+        if (!event.pathParameters) {
+            throw new AppError_1.AppError("invalid request", 401);
+        }
+        taskId = event.pathParameters.taskId;
+        return [2 /*return*/, {
+                statusCode: 200,
+                body: JSON.stringify({
+                    task: { id: taskId }
+                }),
+            }];
+    });
+}); };
+exports.deleteTask = deleteTask;
+var assignTask = function (event) { return __awaiter(void 0, void 0, void 0, function () {
+    var _a, taskId, memberId;
+    return __generator(this, function (_b) {
+        if (!event.pathParameters) {
+            throw new AppError_1.AppError("invalid request", 401);
+        }
+        _a = event.pathParameters, taskId = _a.taskId, memberId = _a.memberId;
+        return [2 /*return*/, {
+                statusCode: 200,
+                body: JSON.stringify({
+                    task: { id: taskId, memberId: memberId }
+                }),
+            }];
+    });
+}); };
+exports.assignTask = assignTask;
+var acceptTask = function (event) { return __awaiter(void 0, void 0, void 0, function () {
+    var taskId;
+    return __generator(this, function (_a) {
+        if (!event.pathParameters) {
+            throw new AppError_1.AppError("invalid request", 401);
+        }
+        taskId = event.pathParameters.taskId;
+        return [2 /*return*/, {
+                statusCode: 200,
+                body: JSON.stringify({
+                    task: { id: taskId, }
+                }),
+            }];
+    });
+}); };
+exports.acceptTask = acceptTask;
+var completeTask = function (event) { return __awaiter(void 0, void 0, void 0, function () {
+    var taskId;
+    return __generator(this, function (_a) {
+        if (!event.pathParameters) {
+            throw new AppError_1.AppError("invalid request", 401);
+        }
+        taskId = event.pathParameters.taskId;
+        return [2 /*return*/, {
+                statusCode: 200,
+                body: JSON.stringify({
+                    task: { id: taskId }
+                }),
+            }];
+    });
+}); };
+exports.completeTask = completeTask;
+var closeTask = function (event) { return __awaiter(void 0, void 0, void 0, function () {
+    var taskId;
+    return __generator(this, function (_a) {
+        if (!event.pathParameters) {
+            throw new AppError_1.AppError("invalid request", 401);
+        }
+        taskId = event.pathParameters.taskId;
+        return [2 /*return*/, {
+                statusCode: 200,
+                body: JSON.stringify({
+                    task: { id: taskId }
+                }),
+            }];
+    });
+}); };
+exports.closeTask = closeTask;
 //# sourceMappingURL=task.js.map

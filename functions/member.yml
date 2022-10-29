@@ -1,0 +1,6 @@
+getMemberTasks:
+  handler: handlers/member.getMemberTasks
+  events:
+    - httpApi:
+        path: /member/{memberId}/tasks
+        method: get

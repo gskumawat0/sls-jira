@@ -19,4 +19,4 @@ plugins:
 functions:
   - ${file(./functions/healthCheck.yml)}
   - ${file(./functions/task.yml)}
-  - ${file(./functions/users.yml)}
+  - ${file(./functions/member.yml)}

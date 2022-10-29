@@ -1,28 +1,25 @@
 "use strict";
+import { APIGatewayProxyHandlerV2, APIGatewayProxyEventV2 } from 'aws-lambda'
 
-module.exports.healthCheck = async (event) => {
+export const healthCheck: APIGatewayProxyHandlerV2 = async () => {
   return {
     statusCode: 200,
     body: JSON.stringify(
       {
         message: "we're live",
-      },
-      null,
-      2
+      }
     ),
   };
 };
 
 
-module.exports.test = async (event) => {
+export const test = async (event: APIGatewayProxyEventV2) => {
   return {
     statusCode: 200,
     body: JSON.stringify(
       {
         input: event
-      },
-      null,
-      2
+      }
     ),
   };
 };
