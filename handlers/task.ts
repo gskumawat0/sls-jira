@@ -18,6 +18,23 @@ let dynamoDbClient = initDB();
 // 3. add authentications
 // 4. add middleware for roles authorization
 
+const validateTaskRequest = ({ title = '', }) => {
+  if (!title) {
+    throw new AppError('title is required', 400)
+  }
+
+  if (title.length < 3 || title.length > 30) {
+    throw new AppError('title length should be greater than 3 and less than 30 character', 400)
+  }
+
+  const specialCharRegexp = new RegExp("^[a-zA-Z0-9#_ ]*$");
+
+  if (!specialCharRegexp.test(title)) {
+    throw new AppError('title can not have special character except # and _', 400)
+  }
+  return true
+}
+
 export const getAllTasks: APIGatewayProxyHandlerV2 = async () => {
   try {
     const getParams = {
@@ -54,6 +71,8 @@ export const createTask: APIGatewayProxyHandlerV2 = async (event: APIGatewayProx
     }
 
     const data = JSON.parse(event.body);
+    validateTaskRequest({ title: data.title })
+
     const id = uuid();
 
     // TODO: add createdBy from auth context if available
@@ -99,6 +118,7 @@ export const updateTask: APIGatewayProxyHandlerV2 = async (event: APIGatewayProx
     }
 
     const data = JSON.parse(event.body);
+    validateTaskRequest({ title: data.title });
     const { taskId } = event.pathParameters;
 
     if (!taskId) {
