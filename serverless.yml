@@ -1,6 +1,14 @@
 custom:
+  membersTable: members
+  tasksTable: tasks
   serverless-offline:
     httpPort: 5000
+  dynamodb:
+    stages:
+      - dev
+    start:
+      migrate: true
+      port: 8082
 
 service: sls-jira
 frameworkVersion: '3'
@@ -10,10 +18,79 @@ provider:
   runtime: nodejs16.x
   stage: dev
   region: ap-south-1
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - dynamodb:Query
+            - dynamodb:Scan
+            - dynamodb:GetItem
+            - dynamodb:PutItem
+            - dynamodb:UpdateItem
+            - dynamodb:DeleteItem
+          Resource:
+            - Fn::GetAtt: [ MembersTable, Arn ]
+            - Fn::GetAtt: [ TasksTable, Arn ]
+  environment:
+    MEMBERS_TABLE: ${self:custom.membersTable}
+    TASKS_TABLE: ${self:custom.tasksTable}
 
 plugins:
   - serverless-plugin-typescript
+  - serverless-dynamodb-local
   - serverless-offline
+
+resources:
+  Resources:
+    MembersTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+          # - AttributeName: username
+          #   AttributeType: S
+          # - AttributeName: name
+          #   AttributeType: S
+          # - AttributeName: email
+          #   AttributeType: S
+          # - AttributeName: role
+          #   AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        BillingMode: PAY_PER_REQUEST
+        TableName: ${self:custom.membersTable}
+    TasksTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+          # - AttributeName: title
+          #   AttributeType: S
+          # - AttributeName: description
+          #   AttributeType: S
+          # - AttributeName: dateCreated
+          #   AttributeType: S
+          # - AttributeName: dateAssigned
+          #   AttributeType: S
+          # - AttributeName: dateCompleted
+          #   AttributeType: S
+          # - AttributeName: dateClosed
+          #   AttributeType: S
+          # - AttributeName: status
+          #   AttributeType: S
+          # - AttributeName: createdBy
+          #   AttributeType: S
+          # - AttributeName: assignedTo
+          #   AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        BillingMode: PAY_PER_REQUEST
+        TableName: ${self:custom.tasksTable}
 
 
 functions:

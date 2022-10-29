@@ -4,3 +4,9 @@ jspm_packages
 
 # Serverless directories
 .serverless
+
+# local dynamodb
+.dynamodb
+
+# ts build
+.build
