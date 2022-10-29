@@ -1,0 +1,6 @@
+getUserTasks:
+  handler: handlers/users.getUserTasks
+  events:
+    - httpApi:
+        path: /users/{userId}/tasks
+        method: get

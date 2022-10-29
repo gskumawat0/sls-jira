@@ -1,0 +1,12 @@
+healthCheck:
+    handler: handlers/healthCheck.healthCheck
+    events:
+      - httpApi:
+          path: /healthCheck
+          method: get
+test:
+  handler: handlers/healthCheck.test
+  events:
+    - httpApi:
+        path: /
+        method: get

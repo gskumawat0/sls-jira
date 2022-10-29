@@ -1,0 +1,6 @@
+getAllTasks:
+  handler: handlers/task.getAllTasks
+  events:
+    - httpApi:
+        path: /tasks
+        method: get

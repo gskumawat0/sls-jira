@@ -1,26 +1,22 @@
+custom:
+  serverless-offline:
+    httpPort: 5000
+
 service: sls-jira
 frameworkVersion: '3'
 
 provider:
   name: aws
-  runtime: nodejs14.x
+  runtime: nodejs16.x
+  stage: dev
+  region: ap-south-1
 
-	
 plugins:
   - serverless-plugin-typescript
   - serverless-offline
 
 
 functions:
-  hello:
-    handler: handler.hello
-    events:
-      - httpApi:
-          path: /
-          method: get
-  getAllTasks:
-    handler: task.getAllTasks
-    events:
-      - httpApi:
-          path: /tasks
-          method: get
+  - ${file(./functions/healthCheck.yml)}
+  - ${file(./functions/task.yml)}
+  - ${file(./functions/users.yml)}
