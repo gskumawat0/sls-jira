@@ -7,6 +7,7 @@ provider:
 
 	
 plugins:
+  - serverless-plugin-typescript
   - serverless-offline
 
 
@@ -16,4 +17,10 @@ functions:
     events:
       - httpApi:
           path: /
+          method: get
+  getAllTasks:
+    handler: task.getAllTasks
+    events:
+      - httpApi:
+          path: /tasks
           method: get

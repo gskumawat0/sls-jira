@@ -13,6 +13,8 @@
   "author": "Gouri Shankar <gskumawat555@gmail.com>",
   "license": "ISC",
   "devDependencies": {
-    "serverless-offline": "^11.2.1"
+    "serverless-offline": "^11.2.1",
+    "serverless-plugin-typescript": "^2.1.4",
+    "typescript": "^4.8.4"
   }
 }
