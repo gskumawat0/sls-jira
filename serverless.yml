@@ -40,8 +40,9 @@ provider:
   environment:
     MEMBERS_TABLE: ${self:custom.membersTable}
     TASKS_TABLE: ${self:custom.tasksTable}
-    # AWS_ACCESS_KEY_ID: ${env:AWS_ACCESS_KEY_ID}
-    # AWS_SECRET_ACCESS_KEY: ${env:AWS_SECRET_ACCESS_KEY}
+
+  httpApi:
+    cors: true
 
 
 plugins:
