@@ -1,0 +1,4 @@
+.build
+.dynamodb
+functions
+serverless.yml
