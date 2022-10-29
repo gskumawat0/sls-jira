@@ -240,7 +240,7 @@ export const assignTask: APIGatewayProxyHandlerV2 = async (event: APIGatewayProx
       },
       ExpressionAttributeValues: {
         ":memberId": memberId,
-        ":dateAssigned": DateTime.now(),
+        ":dateAssigned": DateTime.now().toISO(),
         ":status": "ASSIGNED",
         ":draft": "DRAFT"
       },
@@ -347,7 +347,7 @@ export const completeTask: APIGatewayProxyHandlerV2 = async (event: APIGatewayPr
       },
       ExpressionAttributeValues: {
         ":status": "COMPLETED",
-        ":dateCompleted": DateTime.now(),
+        ":dateCompleted": DateTime.now().toISO(),
         ":inProgress": "IN_PROGRESS"
       },
       ReturnValues: "ALL_NEW",
@@ -401,7 +401,7 @@ export const closeTask: APIGatewayProxyHandlerV2 = async (event: APIGatewayProxy
       },
       ExpressionAttributeValues: {
         ":status": "CLOSED",
-        ":dateClosed": DateTime.now(),
+        ":dateClosed": DateTime.now().toISO(),
         ":complete": "COMPLETE"
       },
       ReturnValues: "ALL_NEW",
