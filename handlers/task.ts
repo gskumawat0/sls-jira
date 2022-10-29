@@ -1,25 +1,16 @@
 "use strict";
 import { APIGatewayProxyHandlerV2, APIGatewayProxyEventV2 } from 'aws-lambda'
 import { AppError } from '../utils/AppError';
-import { DynamoDB } from 'aws-sdk';
 import { v4 as uuid } from 'uuid';
 import { DateTime, Settings } from 'luxon';
+import { initDB } from '../utils/initDB';
 
 const TASKS_TABLE = process.env.TASKS_TABLE as string;
 
 // set default timezone
 Settings.defaultZone = "America/New_York";
 
-let dynamoDbClient;
-
-if (process.env.NODE_ENV === 'production') {
-  dynamoDbClient = new DynamoDB.DocumentClient();
-} else {
-  dynamoDbClient = new DynamoDB.DocumentClient({
-    region: 'localhost',
-    endpoint: process.env.LOCAL_DYNAMODB_URL
-  });
-}
+let dynamoDbClient = initDB();
 
 // TODO: 
 // 1. add title validations
