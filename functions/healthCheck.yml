@@ -8,5 +8,5 @@ test:
   handler: handlers/healthCheck.test
   events:
     - httpApi:
-        path: /
+        path: /test
         method: get

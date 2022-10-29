@@ -6,6 +6,10 @@ import { v4 as uuid } from 'uuid';
 import { DateTime, Settings } from 'luxon';
 
 const TASKS_TABLE = process.env.TASKS_TABLE as string;
+
+// set default timezone
+Settings.defaultZone = "America/New_York";
+
 let dynamoDbClient;
 
 if (process.env.NODE_ENV === 'production') {
@@ -15,18 +19,41 @@ if (process.env.NODE_ENV === 'production') {
     region: 'localhost',
     endpoint: process.env.LOCAL_DYNAMODB_URL
   });
-
 }
-
-// set default timezone
-Settings.defaultZone = "America/New_York";
-
 
 // TODO: 
 // 1. add title validations
 // 2. add status validations 
 // 3. add authentications
 // 4. add middleware for roles authorization
+
+export const getAllTasks: APIGatewayProxyHandlerV2 = async () => {
+  try {
+    const getParams = {
+      TableName: TASKS_TABLE,
+    };
+
+    const { Items: tasks } = await dynamoDbClient.scan(getParams).promise();
+
+    return {
+      statusCode: 200,
+      body: JSON.stringify(
+        {
+          tasks
+        }
+      ),
+    };
+  } catch (error) {
+    return {
+      statusCode: error.status || 500,
+      body: JSON.stringify(
+        {
+          message: error.message,
+        }
+      ),
+    };
+  }
+};
 
 export const createTask: APIGatewayProxyHandlerV2 = async (event: APIGatewayProxyEventV2) => {
   try {
@@ -93,10 +120,14 @@ export const updateTask: APIGatewayProxyHandlerV2 = async (event: APIGatewayProx
         id: taskId
       },
       UpdateExpression: "SET title = :title, description = :description",
-      ConditionExpression: "status <> CLOSED",
+      ConditionExpression: "#status <> :closed",
+      ExpressionAttributeNames: {
+        "#status": "status",
+      },
       ExpressionAttributeValues: {
         ":title": data.title,
-        ":description": data.description
+        ":description": data.description,
+        ":closed": "CLOSED"
       },
       ReturnValues: "ALL_NEW",
     }
@@ -188,14 +219,14 @@ export const deleteTask: APIGatewayProxyHandlerV2 = async (event: APIGatewayProx
       },
     }
 
-    const { Attributes: deletedTask } = await dynamoDbClient.delete(deleteParams).promise();
+    await dynamoDbClient.delete(deleteParams).promise();
 
 
     return {
       statusCode: 200,
       body: JSON.stringify(
         {
-          task: deletedTask,
+          message: "task deleted successfully"
         }
       ),
     };
@@ -402,7 +433,7 @@ export const closeTask: APIGatewayProxyHandlerV2 = async (event: APIGatewayProxy
       ExpressionAttributeValues: {
         ":status": "CLOSED",
         ":dateClosed": DateTime.now().toISO(),
-        ":complete": "COMPLETE"
+        ":completed": "COMPLETED"
       },
       ReturnValues: "ALL_NEW",
     }

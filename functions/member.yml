@@ -1,6 +1,18 @@
+getAllMembers:
+  handler: handlers/member.getAllMembers
+  events:
+    - httpApi:
+        path: /member
+        method: get
+createMember:
+  handler: handlers/member.createMember
+  events:
+    - httpApi:
+        path: /member
+        method: post
 getMemberTasks:
   handler: handlers/member.getMemberTasks
   events:
     - httpApi:
-        path: /member/{memberId}/tasks
+        path: /member/{memberId}/task
         method: get
