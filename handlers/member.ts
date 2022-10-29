@@ -1,7 +1,11 @@
 "use strict";
 import { APIGatewayProxyHandlerV2, APIGatewayProxyEventV2 } from 'aws-lambda'
 import { AppError } from '../utils/AppError';
+import * as AWS from 'aws-sdk'
 
+const TASKS_TABLE = process.env.TASKS_TABLE;
+
+const dynamoDbClient = new AWS.DynamoDB.DocumentClient();
 
 export const getMemberTasks: APIGatewayProxyHandlerV2 = async (event: APIGatewayProxyEventV2) => {
 	try {

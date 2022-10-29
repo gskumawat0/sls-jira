@@ -4,6 +4,8 @@ useDotenv: true
 custom:
   membersTable: members
   tasksTable: tasks
+  dotenv:
+    logging: false
   serverless-offline:
     httpPort: 5000
   dynamodb:
@@ -12,8 +14,7 @@ custom:
     start:
       migrate: true
       port: 8082
-  dotenv:
-    logging: false
+      cors: true
 
 service: sls-jira
 frameworkVersion: '3'
@@ -23,8 +24,10 @@ provider:
   runtime: nodejs16.x
   stage: dev
   region: ap-south-1
+  profile: sls-jira
   iam:
     role:
+      name: sls-jira-role
       statements:
         - Effect: Allow
           Action:
