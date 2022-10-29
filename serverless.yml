@@ -1,3 +1,6 @@
+	
+useDotenv: true
+
 custom:
   membersTable: members
   tasksTable: tasks
@@ -9,6 +12,8 @@ custom:
     start:
       migrate: true
       port: 8082
+  dotenv:
+    logging: false
 
 service: sls-jira
 frameworkVersion: '3'
@@ -35,8 +40,12 @@ provider:
   environment:
     MEMBERS_TABLE: ${self:custom.membersTable}
     TASKS_TABLE: ${self:custom.tasksTable}
+    # AWS_ACCESS_KEY_ID: ${env:AWS_ACCESS_KEY_ID}
+    # AWS_SECRET_ACCESS_KEY: ${env:AWS_SECRET_ACCESS_KEY}
+
 
 plugins:
+  - serverless-dotenv-plugin
   - serverless-plugin-typescript
   - serverless-dynamodb-local
   - serverless-offline

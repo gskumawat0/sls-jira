@@ -10,3 +10,8 @@ jspm_packages
 
 # ts build
 .build
+
+# env files
+.env
+.env.development.local
+.env.production.local
