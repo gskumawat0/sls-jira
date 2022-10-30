@@ -28,6 +28,7 @@
     "dependencies": {
         "aws-sdk": "^2.1243.0",
         "luxon": "^3.0.4",
+        "tiny-validation": "^1.1.2",
         "uuid": "^9.0.0"
     }
 }

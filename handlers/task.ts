@@ -4,6 +4,7 @@ import { AppError } from '../utils/AppError';
 import { v4 as uuid } from 'uuid';
 import { DateTime, Settings } from 'luxon';
 import { initDB } from '../utils/initDB';
+import { Schema, Fail, Success, validate, Validation, Validators } from 'tiny-validation'
 
 const TASKS_TABLE = process.env.TASKS_TABLE as string;
 
@@ -13,26 +14,35 @@ Settings.defaultZone = 'America/New_York';
 let dynamoDbClient = initDB();
 
 // TODO:
-// 1. add title validations
-// 2. add status validations
 // 3. add authentications
 // 4. add middleware for roles authorization
 
-const validateTaskRequest = ({ title = '' }) => {
-    if (!title) {
-        throw new AppError('title is required', 400);
+const validateTaskRequest = (data) => {
+    const { isPresent, maxChars, minChars, } = Validators
+
+    const hasSpecialChars = Validation((key: string, value: string) => {
+        const specialCharRegexp = new RegExp('^[a-zA-Z0-9#_ ]*$');
+
+        if (!specialCharRegexp.test(value)) {
+            return Fail({ [key]: [`${key} can not have special character except # and _`] })
+        }
+        return Success()
+    })
+
+    const titleSchema: Schema = {
+        title: [isPresent(), minChars(3), maxChars(30), hasSpecialChars]
     }
 
-    if (title.length < 3 || title.length > 30) {
-        throw new AppError('title length should be greater than 3 and less than 30 character', 400);
+    const result = validate(titleSchema, data);
+
+    if (result.isFail) {
+        const message = Object.values(result.x).map((el: string[]) => el.join(', ')).join(', ')
+        throw new AppError(message, 400)
     }
 
-    const specialCharRegexp = new RegExp('^[a-zA-Z0-9#_ ]*$');
+    return true
 
-    if (!specialCharRegexp.test(title)) {
-        throw new AppError('title can not have special character except # and _', 400);
-    }
-    return true;
+
 };
 
 export const getAllTasks: APIGatewayProxyHandlerV2 = async () => {
