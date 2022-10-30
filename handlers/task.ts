@@ -37,6 +37,7 @@ const validateTaskRequest = ({ title = '' }) => {
 
 export const getAllTasks: APIGatewayProxyHandlerV2 = async () => {
     try {
+
         const getParams = {
             TableName: TASKS_TABLE
         };
@@ -46,7 +47,7 @@ export const getAllTasks: APIGatewayProxyHandlerV2 = async () => {
         return {
             statusCode: 200,
             body: JSON.stringify({
-                tasks
+                tasks,
             })
         };
     } catch (error) {

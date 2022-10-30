@@ -49,11 +49,6 @@ provider:
   environment:
     MEMBERS_TABLE: ${self:custom.membersTable}
     TASKS_TABLE: ${self:custom.tasksTable}
-    DYNAMODB_URL:
-      Fn::Join:
-        - ""
-        - - https://s3.amazonaws.com/
-          - Ref: MyBucket
 
   httpApi:
     cors: true
