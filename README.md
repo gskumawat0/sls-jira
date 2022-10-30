@@ -1,22 +1,22 @@
-<!--
-title: 'AWS Simple HTTP Endpoint example in NodeJS'
-description: 'This template demonstrates how to make a simple HTTP API with Node.js running on AWS Lambda and API Gateway using the Serverless Framework.'
-layout: Doc
-framework: v3
-platform: AWS
-language: nodeJS
-authorLink: 'https://github.com/serverless'
-authorName: 'Serverless, inc.'
-authorAvatar: 'https://avatars1.githubusercontent.com/u/13742415?s=200&v=4'
--->
+# SLS-JIRA
 
-# Serverless Framework Node HTTP API on AWS
+User daily task management api with serverless
 
-This template demonstrates how to make a simple HTTP API with Node.js running on AWS Lambda and API Gateway using the Serverless Framework.
+## Prerequistic
 
-This template does not include any kind of persistence (database). For more advanced examples, check out the [serverless/examples repository](https://github.com/serverless/examples/) which includes Typescript, Mongo, DynamoDB and other examples.
+-   NodeJs 16.17.0+
+-   NPM8.15.0+
 
-## Usage
+## How to Install
+
+-   let's start by cloning this repo using `git clone git@github.com:gskumawat0/sls-jira.git`
+-   install `serverless` module using `npm i -g serverless`
+-   install project dependencies using `npm i`
+-   install aws-cli or upgrade to latest version. https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html
+-   after installing aws-cli, create a `sls-jira` profile (configured at `provider.profile` in `serverless.yml` file ) by `aws configure --profile sls-jira`
+-   install dynamodb on your system by `sls dynamodb install`. you can uninstall dynamodb by `sls dynamodb remove` if needed.
+-   now start dynamodb local server using `sls dynamodb start`
+-   start the development api server with `sls offline` and play around with this project
 
 ### Deployment
 
@@ -36,7 +36,8 @@ functions:
   hello: aws-node-http-api-project-dev-hello (1.9 kB)
 ```
 
-_Note_: In current form, after deployment, your API is public and can be invoked by anyone. For production deployments, you might want to configure an authorizer. For details on how to do that, refer to [http event docs](https://www.serverless.com/framework/docs/providers/aws/events/apigateway/).
+you can delete all of your resources with `sls remove`
+for more help, please run `sls --help`
 
 ### Invocation
 
@@ -50,42 +51,9 @@ Which should result in response similar to the following (removed `input` conten
 
 ```json
 {
-  "message": "Go Serverless v2.0! Your function executed successfully!",
+  "message": "Go Serverless v3.0! Your function executed successfully!",
   "input": {
     ...
   }
 }
 ```
-
-### Local development
-
-You can invoke your function locally by using the following command:
-
-```bash
-serverless invoke local --function hello
-```
-
-Which should result in response similar to the following:
-
-```
-{
-  "statusCode": 200,
-  "body": "{\n  \"message\": \"Go Serverless v3.0! Your function executed successfully!\",\n  \"input\": \"\"\n}"
-}
-```
-
-Alternatively, it is also possible to emulate API Gateway and Lambda locally by using `serverless-offline` plugin. In order to do that, execute the following command:
-
-```bash
-serverless plugin install -n serverless-offline
-```
-
-It will add the `serverless-offline` plugin to `devDependencies` in `package.json` file as well as will add it to `plugins` in `serverless.yml`.
-
-After installation, you can start local emulation with:
-
-```
-serverless offline
-```
-
-To learn more about the capabilities of `serverless-offline`, please refer to its [GitHub repository](https://github.com/dherault/serverless-offline).
