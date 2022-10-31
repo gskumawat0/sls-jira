@@ -13,10 +13,6 @@ Settings.defaultZone = 'America/New_York';
 
 let dynamoDbClient = initDB();
 
-// TODO:
-// 3. add authentications
-// 4. add middleware for roles authorization
-
 const validateTaskRequest = (data) => {
     const { isPresent, maxChars, minChars, } = Validators
 
@@ -41,13 +37,11 @@ const validateTaskRequest = (data) => {
     }
 
     return true
-
-
 };
 
-export const getAllTasks: APIGatewayProxyHandlerV2 = async () => {
+export const getAllTasks: APIGatewayProxyHandlerV2 = async (event, context) => {
     try {
-
+        console.log('cc', context)
         const getParams = {
             TableName: TASKS_TABLE
         };

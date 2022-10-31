@@ -1,0 +1,6 @@
+JiraAdminAuthorizer:
+  handler: handlers/authorizers.JiraAdminAuthorizer
+JiraManagerAuthorizer:
+  handler: handlers/authorizers.JiraManagerAuthorizer
+JiraMemberAuthorizer:
+  handler: handlers/authorizers.JiraMemberAuthorizer

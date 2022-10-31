@@ -4,15 +4,11 @@ getAllMembers:
     - httpApi:
         path: /member
         method: get
-createMember:
-  handler: handlers/member.createMember
-  events:
-    - httpApi:
-        path: /member
-        method: post
+        authorizer: JiraAdminAuthorizer
 getMemberTasks:
   handler: handlers/member.getMemberTasks
   events:
     - httpApi:
         path: /member/{memberId}/task
         method: get
+        authorizer: JiraMemberAuthorizer
