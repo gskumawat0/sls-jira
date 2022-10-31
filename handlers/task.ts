@@ -1,5 +1,5 @@
 'use strict';
-import { APIGatewayProxyHandlerV2, APIGatewayProxyEventV2 } from 'aws-lambda';
+import { APIGatewayProxyHandlerV2, APIGatewayProxyEventV2, APIGatewayProxyEventV2WithJWTAuthorizer } from 'aws-lambda';
 import { AppError } from '../utils/AppError';
 import { v4 as uuid } from 'uuid';
 import { DateTime, Settings } from 'luxon';
@@ -41,7 +41,6 @@ const validateTaskRequest = (data) => {
 
 export const getAllTasks: APIGatewayProxyHandlerV2 = async (event, context) => {
     try {
-        console.log('cc', context)
         const getParams = {
             TableName: TASKS_TABLE
         };
@@ -64,7 +63,7 @@ export const getAllTasks: APIGatewayProxyHandlerV2 = async (event, context) => {
     }
 };
 
-export const createTask: APIGatewayProxyHandlerV2 = async (event: APIGatewayProxyEventV2) => {
+export const createTask: APIGatewayProxyHandlerV2 = async (event: APIGatewayProxyEventV2WithJWTAuthorizer) => {
     try {
         if (!event.body) {
             throw new AppError('bad request', 400);
@@ -72,13 +71,21 @@ export const createTask: APIGatewayProxyHandlerV2 = async (event: APIGatewayProx
 
         const data = JSON.parse(event.body);
         validateTaskRequest({ title: data.title });
+        // @ts-ignore
+        const { lambda: { user: authUser = '', }
+        } = event.requestContext.authorizer;
+
+        let userId;
+        if (authUser) {
+            ({ id: userId } = JSON.parse(authUser))
+        }
 
         const id = uuid();
 
-        // TODO: add createdBy from auth context if available
         const createItem = {
             ...data,
             id,
+            createdBy: userId,
             createdAt: DateTime.now().toISO(),
             status: 'DRAFT'
         };

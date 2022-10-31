@@ -8,6 +8,12 @@ interface IAuthResponse {
 	context?: any;
 }
 
+const allowedRoleAccess = {
+	ADMIN: ['ADMIN'],
+	MANAGER: ['ADMIN', 'MANAGER'],
+	MEMBER: ['ADMIN', 'MANAGER', 'MEMBER']
+}
+
 // Policy helper function
 const generatePolicy = (principalId, effect, resource, userData) => {
 	const authResponse: IAuthResponse = {
@@ -49,12 +55,14 @@ const authorizeWithRole = (event, context, cb, role) => {
 		return cb(new Error('please signin again'));
 	}
 
-	if (decodedData.data.role !== role) {
+	if (!allowedRoleAccess[role].includes(decodedData.data.role)) {
 		return cb(new Error('bad request'));
 	}
 
+	const policyDocument = generatePolicy(decodedData.data.id, 'Allow', event.routeArn, JSON.stringify(decodedData.data))
+
 	// for more safety, we can search user in our db
-	return cb(null, generatePolicy(decodedData.data.id, 'Allow', event.routeArn, JSON.stringify(decodedData.data)));
+	return cb(null, policyDocument);
 }
 
 export const JiraAdminAuthorizer = (event, context, cb) => {
