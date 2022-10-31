@@ -36,7 +36,7 @@ functions:
   hello: aws-node-http-api-project-dev-hello (1.9 kB)
 ```
 
-you can delete all of your resources with `sls remove`
+you can delete all of your resources with `sls remove`.  
 for more help, please run `sls --help`
 
 ### Invocation

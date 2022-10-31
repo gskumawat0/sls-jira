@@ -4,51 +4,60 @@ getAllTasks:
     - httpApi:
         path: /task
         method: get
+        authorizer: JiraAdminAuthorizer
 createTask:
   handler: handlers/task.createTask
   events:
     - httpApi:
         path: /task
         method: post
+        authorizer: JiraManagerAuthorizer
 updateTask:
   handler: handlers/task.updateTask
   events:
     - httpApi:
         path: /task/{taskId}
         method: put
+        authorizer: JiraManagerAuthorizer
 getTask:
   handler: handlers/task.getTask
   events:
     - httpApi:
         path: /task/{taskId}
         method: get
+        authorizer: JiraMemberAuthorizer
 deleteTask:
   handler: handlers/task.deleteTask
   events:
     - httpApi:
         path: /task/{taskId}
         method: delete
+        authorizer: JiraManagerAuthorizer
 assignTask:
   handler: handlers/task.assignTask
   events:
     - httpApi:
         path: /task/{taskId}/assign/{memberId}
         method: put
+        authorizer: JiraManagerAuthorizer
 acceptTask:
   handler: handlers/task.acceptTask
   events:
     - httpApi:
         path: /task/{taskId}/accept
         method: put
+        authorizer: JiraMemberAuthorizer
 completeTask:
   handler: handlers/task.completeTask
   events:
     - httpApi:
         path: /task/{taskId}/complete
         method: put
+        authorizer: JiraManagerAuthorizer
 closeTask:
   handler: handlers/task.closeTask
   events:
     - httpApi:
         path: /task/{taskId}/close
         method: put
+        authorizer: JiraManagerAuthorizer

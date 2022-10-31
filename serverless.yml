@@ -52,6 +52,16 @@ provider:
 
   httpApi:
     cors: true
+    authorizers:
+      JiraAdminAuthorizer:
+        type: request
+        functionName: JiraAdminAuthorizer
+      JiraManagerAuthorizer:
+        type: request
+        functionName: JiraManagerAuthorizer
+      JiraMemberAuthorizer:
+        type: request
+        functionName: JiraMemberAuthorizer
 
 
 plugins:
@@ -66,18 +76,10 @@ resources:
       Type: AWS::DynamoDB::Table
       Properties:
         AttributeDefinitions:
-          - AttributeName: id
+          - AttributeName: email
             AttributeType: S
-          # - AttributeName: username
-          #   AttributeType: S
-          # - AttributeName: name
-          #   AttributeType: S
-          # - AttributeName: email
-          #   AttributeType: S
-          # - AttributeName: role
-          #   AttributeType: S
         KeySchema:
-          - AttributeName: id
+          - AttributeName: email
             KeyType: HASH
         BillingMode: PAY_PER_REQUEST
         TableName: ${self:custom.membersTable}
@@ -87,32 +89,15 @@ resources:
         AttributeDefinitions:
           - AttributeName: id
             AttributeType: S
-          # - AttributeName: title
-          #   AttributeType: S
-          # - AttributeName: description
-          #   AttributeType: S
-          # - AttributeName: dateCreated
-          #   AttributeType: S
-          # - AttributeName: dateAssigned
-          #   AttributeType: S
-          # - AttributeName: dateCompleted
-          #   AttributeType: S
-          # - AttributeName: dateClosed
-          #   AttributeType: S
-          # - AttributeName: status
-          #   AttributeType: S
-          # - AttributeName: createdBy
-          #   AttributeType: S
-          # - AttributeName: assignedTo
-          #   AttributeType: S
         KeySchema:
           - AttributeName: id
             KeyType: HASH
         BillingMode: PAY_PER_REQUEST
         TableName: ${self:custom.tasksTable}
 
-
 functions:
   - ${file(./functions/healthCheck.yml)}
   - ${file(./functions/task.yml)}
   - ${file(./functions/member.yml)}
+  - ${file(./functions/auth.yml)}
+  - ${file(./functions/authorizers.yml)}
